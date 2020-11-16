@@ -65,6 +65,8 @@
 */
 
 	void delaydd(uint32_t kd) ;
+	uint8_t inverse_order_in_byte (uint8_t input);
+	uint16_t inverse_order_in_two_byte (uint16_t input);
 
 /*
 **************************************************************************
@@ -108,6 +110,9 @@ void EVEN (void) {
 
 //*** WRITE_ONE_CELL *******************************************************
 void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t write_u16) 	{
+
+	write_u16 = inverse_order_in_two_byte (write_u16);
+
 	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
 	delaydd(1000);
 	uint16_t command_u16 = 0b0000000000000101 ;
@@ -262,6 +267,7 @@ uint16_t READ (uint16_t cell_u16)	{
 			SET_BTI(res_u16, p);
 			}
 	}
+	res_u16 = inverse_order_in_two_byte (res_u16);
 	return res_u16;
 }
 //*** READ *******************************************************
@@ -273,10 +279,44 @@ uint16_t READ (uint16_t cell_u16)	{
 **************************************************************************
 */
 
+//*** delaydd *******************************************************
 void delaydd(uint32_t kd)
 {
 	for (int jd=0; jd < kd; jd++)
 	{
 		__asm("nop");
 	}
+}
+//*** delaydd *******************************************************
+
+//*** inverse_order_in_byte *******************************************************
+uint8_t inverse_order_in_byte (uint8_t input)
+{
+    uint8_t v2 =	((input & 0x01) << 7) |
+					((input & 0x02) << 5) |
+					((input & 0x04) << 3) |
+					((input & 0x08) << 1) |
+					((input & 0x10) >> 1) |
+					((input & 0x20) >> 3) |
+					((input & 0x40) >> 5) |
+					((input & 0x80) >> 7);
+    return v2;
+}
+//*** inverse_order_in_byte *******************************************************
+
+uint16_t inverse_order_in_two_byte (uint16_t input_u16) {
+
+	uint8_t lo_byte_u8 = (uint8_t)(input_u16 & 0x00ff);
+	uint8_t hi_byte_u8 = (uint8_t)((input_u16 & 0xff00) >> 8);
+
+	lo_byte_u8 = inverse_order_in_byte (lo_byte_u8);
+	hi_byte_u8 = inverse_order_in_byte (hi_byte_u8);
+
+	uint16_t lo_byte_u16 = (uint16_t)lo_byte_u8;
+	uint16_t hi_byte_u16 = (uint16_t)hi_byte_u8;
+
+	uint16_t res_u16 = 0;
+	res_u16 = 	( lo_byte_u16 << 8 ) | hi_byte_u16 ;
+
+    return res_u16;
 }
