@@ -74,134 +74,134 @@
 **************************************************************************
 */
 
-//** EWEN *******************************************************
-void EVEN (void) {
-	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
-	delaydd(1000);
-	uint8_t read_u8 = 0b00011001 ;
-	for (int pos = 0; pos<13; pos++) {
-		if ( CHECK_BIT(read_u8, pos) == 0 ) {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
-		}
-		else {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
-		}
-
-		delaydd(500);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
-		delaydd(1000);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
-		delaydd(500);
-	}
-	delaydd(500);
-
-	for (int pos = 0; pos<35; pos++) {
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
-		delaydd(1000);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
-		delaydd(1000);
-	}
-
-	delaydd(1000);
-	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
-}
-//*** EWEN *******************************************************
-
-
-//*** WRITE_ONE_CELL *******************************************************
-void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t write_u16) 	{
-
-	write_u16 = inverse_order_in_two_byte (write_u16);
-
-	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
-	delaydd(1000);
-	uint16_t command_u16 = 0b0000000000000101 ;
-	for (int pos = 0; pos<3; pos++) {
-		if ( CHECK_BIT(command_u16, pos) == 0 ) {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
-		}
-		else {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
-		}
-
-		delaydd(500);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
-		delaydd(1000);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
-		delaydd(500);
-	}
-	delaydd(500);
-
-	for (int pos = 0; pos<10; pos++) {
-		if ( CHECK_BIT(cell_u16, 9 - pos) == 0 ) {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
-		}
-		else {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
-		}
-
-		delaydd(500);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
-		delaydd(1000);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
-		delaydd(500);
-	}
-	delaydd(500);
-	for (int pos = 0; pos<16; pos++) {
-		if ( CHECK_BIT(write_u16, pos) == 0 ) {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
-		}
-		else {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
-		}
-
-		delaydd(500);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
-		delaydd(1000);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
-		delaydd(500);
-	}
-
-	HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
-
-	delaydd(1000);
-	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
-}
-//*** WRITE_ONE_CELL *******************************************************
-
-
-//** EWDS *******************************************************
-void EWDS (void) 	{
-	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
-	delaydd(1000);
-	uint8_t read_u8 = 0b00000001 ;
-	for (int pos = 0; pos<13; pos++) {
-		if ( CHECK_BIT(read_u8, pos) == 0 ) {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
-		}
-		else {
-			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
-		}
-
-		delaydd(500);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
-		delaydd(1000);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
-		delaydd(500);
-	}
-	delaydd(500);
-
-	for (int pos = 0; pos<35; pos++) {
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
-		delaydd(1000);
-		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
-		delaydd(1000);
-	}
-
-	delaydd(1000);
-	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
-}
-//*** EWDS *******************************************************
+////** EWEN *******************************************************
+//void EVEN (void) {
+//	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
+//	delaydd(1000);
+//	uint8_t read_u8 = 0b00011001 ;
+//	for (int pos = 0; pos<13; pos++) {
+//		if ( CHECK_BIT(read_u8, pos) == 0 ) {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+//		}
+//		else {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
+//		}
+//
+//		delaydd(500);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+//		delaydd(1000);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+//		delaydd(500);
+//	}
+//	delaydd(500);
+//
+//	for (int pos = 0; pos<35; pos++) {
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+//		delaydd(1000);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+//		delaydd(1000);
+//	}
+//
+//	delaydd(1000);
+//	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
+//}
+////*** EWEN *******************************************************
+//
+//
+////*** WRITE_ONE_CELL *******************************************************
+//void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t write_u16) 	{
+//
+//	write_u16 = inverse_order_in_two_byte (write_u16);
+//
+//	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
+//	delaydd(1000);
+//	uint16_t command_u16 = 0b0000000000000101 ;
+//	for (int pos = 0; pos<3; pos++) {
+//		if ( CHECK_BIT(command_u16, pos) == 0 ) {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+//		}
+//		else {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
+//		}
+//
+//		delaydd(500);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+//		delaydd(1000);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+//		delaydd(500);
+//	}
+//	delaydd(500);
+//
+//	for (int pos = 0; pos<10; pos++) {
+//		if ( CHECK_BIT(cell_u16, 9 - pos) == 0 ) {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+//		}
+//		else {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
+//		}
+//
+//		delaydd(500);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+//		delaydd(1000);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+//		delaydd(500);
+//	}
+//	delaydd(500);
+//	for (int pos = 0; pos<16; pos++) {
+//		if ( CHECK_BIT(write_u16, pos) == 0 ) {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+//		}
+//		else {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
+//		}
+//
+//		delaydd(500);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+//		delaydd(1000);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+//		delaydd(500);
+//	}
+//
+//	HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+//
+//	delaydd(1000);
+//	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
+//}
+////*** WRITE_ONE_CELL *******************************************************
+//
+//
+////** EWDS *******************************************************
+//void EWDS (void) 	{
+//	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
+//	delaydd(1000);
+//	uint8_t read_u8 = 0b00000001 ;
+//	for (int pos = 0; pos<13; pos++) {
+//		if ( CHECK_BIT(read_u8, pos) == 0 ) {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+//		}
+//		else {
+//			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
+//		}
+//
+//		delaydd(500);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+//		delaydd(1000);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+//		delaydd(500);
+//	}
+//	delaydd(500);
+//
+//	for (int pos = 0; pos<35; pos++) {
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+//		delaydd(1000);
+//		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+//		delaydd(1000);
+//	}
+//
+//	delaydd(1000);
+//	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
+//}
+////*** EWDS *******************************************************
 
 
 //** READ *******************************************************

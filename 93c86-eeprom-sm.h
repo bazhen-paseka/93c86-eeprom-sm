@@ -58,9 +58,9 @@
 **************************************************************************
 */
 
-	void EVEN (void) ;
-	void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t data_u16) ;
-	void EWDS (void) ;
+//	void EVEN (void) ;
+//	void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t data_u16) ;
+//	void EWDS (void) ;
 	uint16_t READ (uint16_t cell_u16) ;
 
 #endif /* EEPROM_93C86_SM_INCLUDED_H_ */
