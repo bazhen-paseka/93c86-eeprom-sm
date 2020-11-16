@@ -30,9 +30,9 @@
 **************************************************************************
 */
 
-	//	#define SET_BIT(var, pos) ((var) |= (1UL << (pos)))
-	#define CLR_BIT(var, pos) (var &= ~(1UL << (pos)))
-	#define CHECK_BIT(var, pos) (((var) & (1UL << (pos))) != 0)
+	#define SET_BTI(var, pos) 		( (var) |=  (1UL << (pos)))
+	#define CLR_BIT(var, pos) 		( (var) &= ~(1UL << (pos)))
+	#define CHECK_BIT(var, pos) 	(((var) & (1UL << (pos))) != 0)
 
 /*
 **************************************************************************
@@ -59,8 +59,8 @@
 */
 
 	void EVEN (void) ;
-	void WRITE (void) ;
+	void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t data_u16) ;
 	void EWDS (void) ;
-	void READ (void) ;
+	uint16_t READ (uint16_t cell_u16) ;
 
 #endif /* EEPROM_93C86_SM_INCLUDED_H_ */

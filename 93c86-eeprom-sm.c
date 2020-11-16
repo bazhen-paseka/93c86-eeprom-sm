@@ -106,13 +106,13 @@ void EVEN (void) {
 //*** EWEN *******************************************************
 
 
-//*** WRITE *******************************************************
-void WRITE (void) 	{
+//*** WRITE_ONE_CELL *******************************************************
+void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t write_u16) 	{
 	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
 	delaydd(1000);
-	uint16_t write_u16 = 0b0000000000000101 ;
-	for (int pos = 0; pos<13; pos++) {
-		if ( CHECK_BIT(write_u16, pos) == 0 ) {
+	uint16_t command_u16 = 0b0000000000000101 ;
+	for (int pos = 0; pos<3; pos++) {
+		if ( CHECK_BIT(command_u16, pos) == 0 ) {
 			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
 		}
 		else {
@@ -127,7 +127,21 @@ void WRITE (void) 	{
 	}
 	delaydd(500);
 
-	write_u16 = 0x5b9e ;
+	for (int pos = 0; pos<10; pos++) {
+		if ( CHECK_BIT(cell_u16, 9 - pos) == 0 ) {
+			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+		}
+		else {
+			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
+		}
+
+		delaydd(500);
+		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+		delaydd(1000);
+		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+		delaydd(500);
+	}
+	delaydd(500);
 	for (int pos = 0; pos<16; pos++) {
 		if ( CHECK_BIT(write_u16, pos) == 0 ) {
 			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
@@ -148,7 +162,7 @@ void WRITE (void) 	{
 	delaydd(1000);
 	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
 }
-//*** WRITE *******************************************************
+//*** WRITE_ONE_CELL *******************************************************
 
 
 //** EWDS *******************************************************
@@ -186,12 +200,15 @@ void EWDS (void) 	{
 
 
 //** READ *******************************************************
-void READ (void)	{
+uint16_t READ (uint16_t cell_u16)	{
+
+	uint16_t res_u16 = 0;
+
 	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin,  SET) ;
 	delaydd(1000);
-	uint8_t read_u8 = 0b00000011 ;
-	for (int pos = 0; pos<13; pos++) {
-		if ( CHECK_BIT(read_u8, pos) == 0 ) {
+	uint8_t command_read_u8 = 0b00000011 ;
+	for (int pos = 0; pos<3; pos++) {
+		if ( CHECK_BIT(command_read_u8, pos) == 0 ) {
 			HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
 		}
 		else {
@@ -207,6 +224,24 @@ void READ (void)	{
 	}
 	delaydd(1500);
 
+	for (int pos = 0; pos<10; pos++) {
+			if ( CHECK_BIT(cell_u16, 9-pos) == 0 ) {
+				HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+			}
+			else {
+				HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, SET ) ;
+			}
+
+			delaydd(500);
+			HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
+			delaydd(1000);
+
+			HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
+			delaydd(500);
+		}
+		HAL_GPIO_WritePin(DI_GPIO_Port, DI_Pin, RESET ) ;
+		delaydd(1500);
+
 	#define BITS_QNT	15
 	GPIO_PinState memory_bit_ps[BITS_QNT];
 
@@ -221,13 +256,13 @@ void READ (void)	{
 	delaydd(1000);
     HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, RESET ) ;
 
-	#define	DEBUG_STRING_SIZE2		100
-    char DebugString2[DEBUG_STRING_SIZE2];
 
-	for (int pos = 0; pos < BITS_QNT ; pos++) {
-	sprintf(DebugString2," %d", (int)memory_bit_ps[pos]);
-	HAL_UART_Transmit(&huart2, (uint8_t *)DebugString2, strlen(DebugString2), 100);
+	for (int p = 0; p <= BITS_QNT ; p++) {
+		if (memory_bit_ps[BITS_QNT -p] == 1) {
+			SET_BTI(res_u16, p);
+			}
 	}
+	return res_u16;
 }
 //*** READ *******************************************************
 
