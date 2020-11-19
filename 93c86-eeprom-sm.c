@@ -248,7 +248,7 @@ uint16_t READ (uint16_t cell_u16)	{
 		delaydd(1500);
 
 	#define BITS_QNT	15
-	GPIO_PinState memory_bit_ps[BITS_QNT];
+	GPIO_PinState memory_bit_ps[ BITS_QNT + 1 ] ;
 
 	for (int pos = BITS_QNT; pos >= 0 ; pos--) {
 		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
