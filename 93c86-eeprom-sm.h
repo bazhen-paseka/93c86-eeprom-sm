@@ -62,5 +62,6 @@
 //	void WRITE_ONE_CELL (uint16_t cell_u16, uint16_t data_u16) ;
 //	void EWDS (void) ;
 	uint16_t READ (uint16_t cell_u16) ;
+	uint16_t inverse_order_in_two_byte_V2 (uint16_t input);
 
 #endif /* EEPROM_93C86_SM_INCLUDED_H_ */

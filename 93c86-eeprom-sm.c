@@ -68,6 +68,7 @@
 	uint8_t inverse_order_in_byte (uint8_t input);
 	uint16_t inverse_order_in_two_byte (uint16_t input);
 
+
 /*
 **************************************************************************
 *                           GLOBAL FUNCTIONS
@@ -250,7 +251,8 @@ uint16_t READ (uint16_t cell_u16)	{
 	#define BITS_QNT	15
 	GPIO_PinState memory_bit_ps[ BITS_QNT + 1 ] ;
 
-	for (int pos = BITS_QNT; pos >= 0 ; pos--) {
+	//for (int pos = BITS_QNT; pos >= 0 ; pos--) {
+	for (int pos = 0; pos <= BITS_QNT ; pos++) {
 		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin,   SET ) ;
 		delaydd(1000);
 		HAL_GPIO_WritePin(CLK_GPIO_Port, CLK_Pin, RESET ) ;
@@ -267,7 +269,8 @@ uint16_t READ (uint16_t cell_u16)	{
 			SET_BTI(res_u16, p);
 			}
 	}
-	res_u16 = inverse_order_in_two_byte (res_u16);
+	//res_u16 = inverse_order_in_two_byte (res_u16);
+	//res_u16 = inverse_order_in_two_byte_V2 (res_u16);
 	return res_u16;
 }
 //*** READ *******************************************************
@@ -314,6 +317,19 @@ uint16_t inverse_order_in_two_byte (uint16_t input_u16) {
 
 	uint16_t lo_byte_u16 = (uint16_t)lo_byte_u8;
 	uint16_t hi_byte_u16 = (uint16_t)hi_byte_u8;
+
+	uint16_t res_u16 = 0;
+	res_u16 = 	( lo_byte_u16 << 8 ) | hi_byte_u16 ;
+
+    return res_u16;
+}
+
+//*** inverse_order_in_byte_V2 *******************************************************
+
+uint16_t inverse_order_in_two_byte_V2 (uint16_t input_u16) {
+
+	uint8_t lo_byte_u16 =  input_u16 & 0x00ff;
+	uint8_t hi_byte_u16 = (input_u16 & 0xff00) >> 8;
 
 	uint16_t res_u16 = 0;
 	res_u16 = 	( lo_byte_u16 << 8 ) | hi_byte_u16 ;
